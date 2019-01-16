@@ -1,6 +1,8 @@
 package calebr3.tcss450.uw.edu.phishapp;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,17 +31,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
     @Override
     public void onLoginSuccess(Credentials cred, String jwt) {
-//        SuccessFragment sf;
-//        sf = new SuccessFragment();
-//        Bundle args = new Bundle();
-//        args.putSerializable(getString(R.string.all_color_key), color);
-//        lf.setArguments(args);
-//        FragmentTransaction transaction = getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_main_container, sf)
-//                .addToBackStack(null);
-//        // Commit the transaction
-//        transaction.commit();
+        SuccessFragment sf;
+        sf = new SuccessFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(getString(R.string.login_key), cred);
+        sf.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_main_container, sf);
+        transaction.commit();
 
     }
 
@@ -47,13 +47,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
     public void onRegisterClicked() {
         RegisterFragment rf;
         rf = new RegisterFragment();
-        Bundle args = new Bundle();
-
-        rf.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_main_container, rf)
-                .addToBackStack(null);
+                .addToBackStack("login");
         transaction.commit();
 
     }
@@ -61,6 +58,18 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
     @Override
     public void onRegisterSuccess(Credentials cred) {
+
+        LoginFragment lf = new LoginFragment();
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        Log.d(TAG, "here2");
+        Bundle args = new Bundle();
+        args.putSerializable(getString(R.string.register_key), cred);
+        lf.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_main_container, lf);
+        transaction.commit();
+
 
     }
 }

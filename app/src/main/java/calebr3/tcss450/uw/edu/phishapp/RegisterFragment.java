@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import calebr3.tcss450.uw.edu.phishapp.model.Credentials;
 
@@ -21,6 +23,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     private OnRegisterFragmentInteractionListener mListener;
 
+    private EditText email;
+    private EditText pass;
+    private EditText passConf;
+
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -30,7 +36,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        View v = inflater.inflate(R.layout.fragment_register, container, false);
+        Button b = v.findViewById(R.id.button_register);
+        b.setOnClickListener(this);
+
+        email = v.findViewById(R.id.edit_register_email);
+        pass = v.findViewById(R.id.edit_register_password);
+        passConf = v.findViewById(R.id.edit_register_password_confirm);
+
+        return v;
     }
 
     @Override
@@ -52,6 +66,24 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        String e = email.getText().toString();
+        String p = pass.getText().toString();
+        String pc = passConf.getText().toString();
+
+        if(!e.isEmpty()
+                && e.contains("@")
+                && !p.isEmpty()
+                && p.length() > 5
+                && p.equals(pc)){
+            Credentials.Builder b = new Credentials.Builder(e, p);
+            mListener.onRegisterSuccess(b.build());
+        } else {
+            if(e.isEmpty()) email.setError("Email must not be blank");
+            else if(!e.contains("@")) email.setError("Must be a valid email");
+            if(p.isEmpty()) pass.setError("Password must not be blank");
+            else if(!p.equals(pc)) passConf.setError("Passwords must match");
+            else if(p.length() < 6) pass.setError("Password must be longer than 6 characters");
+        }
 
     }
 

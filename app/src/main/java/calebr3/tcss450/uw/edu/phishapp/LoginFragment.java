@@ -27,6 +27,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "FILTER_LOGIN";
 
+    private EditText email;
+    private EditText pass;
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -36,7 +39,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         if (mListener != null) {
             switch (view.getId()) {
                 case R.id.button_login:
-                    login(view, mListener);
+                    if(email.getText().toString().contains("@") && !pass.getText().toString().isEmpty()){
+                        Credentials.Builder b = new Credentials.Builder(email.getText().toString(), pass.getText().toString());
+                        Credentials cred = b.build();
+                        mListener.onLoginSuccess(cred, null);
+                    } else {
+                        if(email.getText().toString().isEmpty()) email.setError("Email must not be blank");
+                        else if(!email.getText().toString().contains("@")) email.setError("Must be a valid email");
+                        if(pass.getText().toString().isEmpty()) pass.setError("Password must not be blank");
+                    }
                     break;
                 case R.id.text_register:
                     mListener.onRegisterClicked();
@@ -45,16 +56,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     break;
             }
 
-        }
-    }
-
-    private static void login(View view, OnLoginFragmentInteractionListener mListener){
-        String email = ((EditText) view.findViewById(R.id.edit_email)).getText().toString();
-        String pass = ((EditText) view.findViewById(R.id.edit_password)).getText().toString();
-        if(email.contains("@") && !pass.isEmpty()){
-            Credentials.Builder b = new Credentials.Builder(email, pass);
-            Credentials cred = b.build();
-            mListener.onLoginSuccess(cred, null);
         }
     }
 
@@ -69,6 +70,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         TextView t = (TextView) v.findViewById(R.id.text_register);
         t.setOnClickListener(this);
+
+        email = v.findViewById(R.id.edit_email);
+        pass = v.findViewById(R.id.edit_password);
+
+        Bundle args = getArguments();
+        if(args != null) {
+            Credentials cred = (Credentials) args.getSerializable(getString(R.string.register_key));
+            email.setText(cred.getEmail());
+            pass.setText(cred.getPassword());
+        }
 
         return v;
     }

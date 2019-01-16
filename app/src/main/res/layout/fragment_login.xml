@@ -22,8 +22,9 @@
             android:ems="10"
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toTopOf="@+id/button_login"
+            app:layout_constraintBottom_toTopOf="@+id/edit_password"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
@@ -36,7 +37,7 @@
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@+id/edit_email"
+            app:layout_constraintBottom_toTopOf="@+id/button_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,11 +64,12 @@
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="80dp"
             android:text="@string/login_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            app:layout_constraintBottom_toTopOf="@+id/edit_password"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

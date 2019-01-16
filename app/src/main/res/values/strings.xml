@@ -7,7 +7,7 @@
     <string name="login_text_register">Register</string>
     <string name="login_name">Phish App</string>
     <string name="register_button">Register</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_key">l_key</string>
+    <string name="register_key">r_key</string>
+    <string name="hello_blank_fragment">wtf</string>
 </resources>
