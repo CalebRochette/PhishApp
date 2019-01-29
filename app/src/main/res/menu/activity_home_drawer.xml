@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_success_view"
+        android:title="Success View"
+        android:icon="@drawable/ic_menu_success" />
+
+    <item
+        android:id="@+id/nav_blog_view"
+        android:title="Blogs"
+        android:icon="@drawable/ic_menu_recycler" />
+
+    <item
+        android:id="@+id/nav_set_lists"
+        android:title="Set Lists"
+        android:icon="@drawable/ic_menu_set_lists" />
+
+
+</menu>

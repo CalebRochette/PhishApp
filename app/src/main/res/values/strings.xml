@@ -9,5 +9,22 @@
     <string name="register_button">Register</string>
     <string name="login_key">l_key</string>
     <string name="register_key">r_key</string>
+    <string name="register_fname">First name</string>
+    <string name="register_username">Username</string>
+    <string name="register_lname">Last name</string>
     <string name="hello_blank_fragment">wtf</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Phish App</string>
+    <string name="nav_header_subtitle">TCSS 450 Labs</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="blog_key_title">b_key_title</string>
+    <string name="blog_key_publish_date">b_key_pub_date</string>
+    <string name="blog_key_teaser">b_key_teaser</string>
+    <string name="blog_key_author">b_key_author</string>
+    <string name="blog_key_url">b_key_url</string>
+    <string name="blog_full_post">Full Post</string>
+
 </resources>

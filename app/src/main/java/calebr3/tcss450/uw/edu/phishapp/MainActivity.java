@@ -1,5 +1,6 @@
 package calebr3.tcss450.uw.edu.phishapp;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,15 +32,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
     @Override
     public void onLoginSuccess(Credentials cred, String jwt) {
-        SuccessFragment sf;
-        sf = new SuccessFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(getString(R.string.login_key), cred);
-        sf.setArguments(args);
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_main_container, sf);
-        transaction.commit();
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra(getString(R.string.login_key), cred);
+        intent.putExtra(getString(R.string.keys_intent_jwt), jwt);
+        startActivity(intent);
 
     }
 
@@ -58,11 +54,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
     @Override
     public void onRegisterSuccess(Credentials cred) {
-
         LoginFragment lf = new LoginFragment();
-        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        Log.d(TAG, "here2");
         Bundle args = new Bundle();
+        getSupportFragmentManager().popBackStack();
         args.putSerializable(getString(R.string.register_key), cred);
         lf.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -70,6 +64,24 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
                 .replace(R.id.frame_main_container, lf);
         transaction.commit();
 
+    }
+
+    @Override
+    public void onWaitFragmentInteractionShow() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frame_main_container, new WaitFragment(), "WAIT")
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+    @Override
+    public void onWaitFragmentInteractionHide() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(getSupportFragmentManager().findFragmentByTag("WAIT"))
+                .commit();
 
     }
 }

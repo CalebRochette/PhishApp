@@ -35,14 +35,15 @@ public class SuccessFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_success, container, false);
 
         Bundle args = getArguments();
+        if(args != null) {
+            Credentials cred = (Credentials) args.getSerializable(getString(R.string.login_key));
+            Log.d(TAG, "oops");
+            String email = cred.getEmail();
+            success = (TextView) v.findViewById(R.id.text_success);
+            success.setText(email);
 
-        Credentials cred  = (Credentials) args.getSerializable(getString(R.string.login_key));
-        Log.d(TAG, "oops");
-        String email = cred.getEmail();
-        success = (TextView) v.findViewById(R.id.text_success);
-        success.setText(email);
+        }
         return v;
-
     }
 
 }
