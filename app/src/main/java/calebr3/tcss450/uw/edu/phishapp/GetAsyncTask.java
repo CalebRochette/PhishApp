@@ -1,6 +1,7 @@
 package calebr3.tcss450.uw.edu.phishapp;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -172,7 +173,6 @@ public class GetAsyncTask extends AsyncTask<Void, String, String> {
             for (final String key: mHeaders.keySet()) {
                 urlConnection.setRequestProperty(key, mHeaders.get(key));
             }
-
             InputStream content = urlConnection.getInputStream();
             BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
             String s = "";

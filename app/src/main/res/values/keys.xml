@@ -15,4 +15,16 @@
     <string name="keys_json_blogs_title">title</string>
     <string name="keys_json_blogs_teaser">teaser</string>
     <string name="keys_json_blogs_url">url</string>
+    <string name="keys_json_set_list_long_date">long_date</string>
+    <string name="keys_json_set_list_location">location</string>
+    <string name="keys_json_set_list_venue">venue</string>
+    <string name="keys_json_set_list_data">setlistdata</string>
+    <string name="keys_json_set_list_notes">setlistnotes</string>
+    <string name="keys_json_set_list_url">url</string>
+    <string name="keys_set_list_locations">setlistlocatons</string>
+    <string name="keys_set_list_venue">setlistvenue</string>
+    <string name="keys_set_list_long_date">setlistlongdate</string>
+    <string name="keys_set_list_data">setlistdata</string>
+    <string name="keys_set_list_notes">setlistnotes</string>
+    <string name="keys_set_list_url">setlisturl</string>
 </resources>

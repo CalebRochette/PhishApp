@@ -18,5 +18,4 @@
         android:title="Set Lists"
         android:icon="@drawable/ic_menu_set_lists" />
 
-
 </menu>

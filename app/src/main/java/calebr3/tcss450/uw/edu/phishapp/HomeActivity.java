@@ -23,11 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import calebr3.tcss450.uw.edu.phishapp.blog.BlogPost;
+import calebr3.tcss450.uw.edu.phishapp.setlists.SetList;
 import calebr3.tcss450.uw.edu.phishapp.model.Credentials;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BlogFragment.OnListFragmentInteractionListener,
-        BlogPostFragment.OnBlogPostFragmentInteractionListener, WaitFragment.OnFragmentInteractionListener{
+        BlogPostFragment.OnBlogPostFragmentInteractionListener, WaitFragment.OnFragmentInteractionListener,
+        SetListsFragment.OnListFragmentInteractionListener, SetListFragment.OnFragmentInteractionListener{
 
     private Credentials cred;
 
@@ -123,7 +125,18 @@ public class HomeActivity extends AppCompatActivity
                     .addHeaderField("authorization", mJwToken) //add the JWT as a header
                     .build().execute();
         } else if (id == R.id.nav_set_lists) {
-
+            Uri uri = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_phish))
+                    .appendPath(getString(R.string.ep_setlists))
+                    .appendPath(getString(R.string.ep_recent))
+                    .build();
+            new GetAsyncTask.Builder(uri.toString())
+                    .onPreExecute(this::onWaitFragmentInteractionShow)
+                    .onPostExecute(this::handleSetListGetOnPostExecute)
+                    .addHeaderField("authorization", mJwToken) //add the JWT as a header
+                    .build().execute();
 
         }
 
@@ -200,6 +213,61 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
+    private void handleSetListGetOnPostExecute(final String result) {
+        //parse JSON
+        try {
+            JSONObject root = new JSONObject(result);
+            if (root.has(getString(R.string.keys_json_blogs_response))) {
+                JSONObject response = root.getJSONObject(
+                        getString(R.string.keys_json_blogs_response));
+                if (response.has(getString(R.string.keys_json_blogs_data))) {
+                    JSONArray data = response.getJSONArray(
+                            getString(R.string.keys_json_blogs_data));
+                    List<SetList> setLists = new ArrayList<>();
+                    for(int i = 0; i < data.length(); i++) {
+                        JSONObject jsonSetList = data.getJSONObject(i);
+                        setLists.add(new SetList.Builder(
+                                jsonSetList.getString(
+                                        getString(R.string.keys_json_set_list_long_date)),
+                                jsonSetList.getString(
+                                        getString(R.string.keys_json_set_list_venue)),
+                                jsonSetList.getString(
+                                        getString(R.string.keys_json_set_list_location)),
+                                jsonSetList.getString(
+                                        getString(R.string.keys_json_set_list_data)),
+                                jsonSetList.getString(
+                                        getString(R.string.keys_json_set_list_notes)),
+                                jsonSetList.getString(
+                                        getString(R.string.keys_json_set_list_url))
+                                )
+                                .build());
+                    }
+                    SetList[] setListsAsArray = new SetList[setLists.size()];
+                    setListsAsArray = setLists.toArray(setListsAsArray);
+                    Bundle args = new Bundle();
+                    args.putSerializable(SetListsFragment.ARG_SET_LISTS, setListsAsArray);
+                    Fragment frag = new SetListsFragment();
+                    frag.setArguments(args);
+                    onWaitFragmentInteractionHide();
+                    loadFragment(frag);
+                } else {
+                    Log.e("ERROR!", "No data array");
+                    //notify user
+                    onWaitFragmentInteractionHide();
+                }
+            } else {
+                Log.e("ERROR!", "No response");
+                //notify user
+                onWaitFragmentInteractionHide();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("ERROR!", e.getMessage());
+            //notify user
+            onWaitFragmentInteractionHide();
+        }
+    }
+
     private void loadFragment(Fragment frag) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
@@ -233,5 +301,28 @@ public class HomeActivity extends AppCompatActivity
                 .remove(getSupportFragmentManager().findFragmentByTag("WAIT"))
                 .commit();
 
+    }
+
+    @Override
+    public void onListFragmentInteraction(SetList item) {
+        Bundle args = new Bundle();
+        SetListFragment slf = new SetListFragment();
+        args.putCharSequence(getString(R.string.keys_set_list_locations), item.getLocation());
+        args.putCharSequence(getString(R.string.keys_set_list_venue), item.getVenue());
+        args.putCharSequence(getString(R.string.keys_set_list_long_date), item.getLongDate());
+        args.putCharSequence(getString(R.string.keys_set_list_data), item.getSetListData());
+        args.putCharSequence(getString(R.string.keys_set_list_notes), item.getSetListNotes());
+        args.putCharSequence(getString(R.string.keys_set_list_url), item.getUrl());
+        slf.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_home, slf)
+                .addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void onSetListFragmentInteraction(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }
